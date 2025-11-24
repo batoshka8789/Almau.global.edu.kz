@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -75,55 +76,36 @@
             content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent);
         }
 
-        /* DASHBOARD LAYOUT */
+        /* ---------------------------------------------------- */
+        /* ИСПРАВЛЕНИЯ ДЛЯ СТАБИЛЬНОСТИ ЛЭЙАУТА (DASHBOARD) */
+        /* ---------------------------------------------------- */
         .dashboard-grid {
-            display: grid; grid-template-columns: 350px 1fr; gap: 20px;
-            margin-top: 30px; height: calc(100vh - 140px); min-height: 700px;
+            display: grid; 
+            /* Более гибкий сайдбар для планшетов */
+            grid-template-columns: minmax(300px, 380px) 1fr; 
+            gap: 20px;
+            margin-top: 30px; 
+            /* Используем max-height, чтобы избежать проблем с vh на мобильных */
+            max-height: calc(100vh - 140px); 
+            min-height: 700px;
         }
 
         /* SIDEBAR (FILTERS & LIST) */
         .sidebar-panel {
             background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
+            /* Занимает всю доступную высоту в гриде */
+            height: 100%; 
             display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow);
         }
-        .panel-header {
-            padding: 20px; background: var(--primary); color: var(--white);
-        }
-        .panel-header h3 { margin: 0; font-size: 1.1rem; font-weight: 400; color: var(--accent); }
-        .stats-row { display: flex; gap: 15px; margin-top: 10px; font-size: 0.9rem; opacity: 0.9; }
-
-        .search-box { padding: 15px; border-bottom: 1px solid var(--border); background: #f9f9f9; }
-        .input-group { position: relative; }
-        .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #999; }
-        .form-control {
-            width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #ccc; border-radius: 4px;
-            font-family: inherit; font-size: 0.95rem; transition: border 0.3s;
-        }
-        .form-control:focus { border-color: var(--secondary); outline: none; }
-
-        .filter-tags { padding: 10px 15px; display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--border); }
-        .filter-tag {
-            font-size: 0.8rem; padding: 4px 10px; background: #eef2f6; border-radius: 20px;
-            cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
-        }
-        .filter-tag:hover { background: #dfe6ed; }
-        .filter-tag.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
         .university-list { overflow-y: auto; flex: 1; }
-        .uni-item {
-            padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s;
-            border-left: 4px solid transparent;
-        }
-        .uni-item:hover { background: #f0f7ff; }
-        .uni-item.active { background: #e6f0fa; border-left-color: var(--accent); }
-        .uni-name { font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px; }
-        .uni-meta { font-size: 0.85rem; color: var(--text-light); display: flex; justify-content: space-between; }
-        .rank-badge { background: var(--accent); color: var(--white); padding: 2px 6px; border-radius: 3px; font-size: 0.75rem; font-weight: bold; }
-
+        
         /* MAP AREA */
         .map-panel {
             background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
             overflow: hidden; box-shadow: var(--shadow); position: relative;
+            /* Занимает всю доступную высоту в гриде */
+            height: 100%; 
         }
         #map { width: 100%; height: 100%; z-index: 1; }
 
@@ -276,12 +258,16 @@
             margin-right: 12px; color: var(--accent);
         }
 
-        /* RESPONSIVE */
+        /* ---------------------------------------------------- */
+        /* АДАПТИВНОСТЬ (RESPONSIVE) - УЛУЧШЕНА */
+        /* ---------------------------------------------------- */
+        
         @media (max-width: 1200px) {
             .container { padding: 0 15px; }
             .dashboard-grid { 
-                grid-template-columns: 300px 1fr; 
-                height: calc(100vh - 120px); 
+                /* Уменьшаем минимальный размер сайдбара для планшетов */
+                grid-template-columns: minmax(280px, 320px) 1fr; 
+                max-height: calc(100vh - 120px); 
                 min-height: 600px;
             }
         }
@@ -292,17 +278,19 @@
                 grid-template-columns: 1fr; 
                 height: auto; 
                 min-height: auto; 
+                max-height: none; /* Снимаем ограничение высоты */
                 margin-top: 20px; 
-                /* Re-order grid for mobile: list below map */
+                /* Перестраиваем грид: карта сверху, список снизу */
                 grid-template-areas: 
                     "map"
                     "sidebar";
             }
-            .map-panel { grid-area: map; height: 400px; }
+            /* Фиксированная высота для карты на мобильных */
+            .map-panel { grid-area: map; height: 400px; } 
             .sidebar-panel { grid-area: sidebar; height: auto; max-height: 500px; }
             .university-list { max-height: 300px; } 
 
-            /* Timeline for mobile */
+            /* Timeline для мобильных */
             .timeline::before { left: 20px; }
             .timeline-item { width: 100%; padding: 0 20px 0 40px; margin-bottom: 30px; }
             .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; text-align: left !important; }
@@ -314,7 +302,7 @@
             /* General */
             .info-grid { grid-template-columns: 1fr; gap: 20px; }
             
-            /* Modal for mobile */
+            /* Modal для мобильных */
             .modal-window { height: 95vh; }
             .modal-body { flex-direction: column; }
             .modal-nav { 
@@ -331,7 +319,7 @@
             }
             .modal-content { padding: 20px; }
             
-            /* Header/Nav for mobile */
+            /* Header/Nav для мобильных */
             .header-flex { flex-direction: column; align-items: flex-start; gap: 15px; }
             .nav-menu { flex-wrap: wrap; margin-top: 10px; gap: 15px; }
             .nav-item { padding: 5px 0; font-size: 0.95rem; }
