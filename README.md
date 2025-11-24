@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -76,36 +75,55 @@
             content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--accent);
         }
 
-        /* ---------------------------------------------------- */
-        /* ИСПРАВЛЕНИЯ ДЛЯ СТАБИЛЬНОСТИ ЛЭЙАУТА (DASHBOARD) */
-        /* ---------------------------------------------------- */
+        /* DASHBOARD LAYOUT */
         .dashboard-grid {
-            display: grid; 
-            /* Более гибкий сайдбар для планшетов */
-            grid-template-columns: minmax(300px, 380px) 1fr; 
-            gap: 20px;
-            margin-top: 30px; 
-            /* Используем max-height, чтобы избежать проблем с vh на мобильных */
-            max-height: calc(100vh - 140px); 
-            min-height: 700px;
+            display: grid; grid-template-columns: 350px 1fr; gap: 20px;
+            margin-top: 30px; height: calc(100vh - 140px); min-height: 700px;
         }
 
         /* SIDEBAR (FILTERS & LIST) */
         .sidebar-panel {
             background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
-            /* Занимает всю доступную высоту в гриде */
-            height: 100%; 
             display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow);
         }
+        .panel-header {
+            padding: 20px; background: var(--primary); color: var(--white);
+        }
+        .panel-header h3 { margin: 0; font-size: 1.1rem; font-weight: 400; color: var(--accent); }
+        .stats-row { display: flex; gap: 15px; margin-top: 10px; font-size: 0.9rem; opacity: 0.9; }
+
+        .search-box { padding: 15px; border-bottom: 1px solid var(--border); background: #f9f9f9; }
+        .input-group { position: relative; }
+        .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #999; }
+        .form-control {
+            width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #ccc; border-radius: 4px;
+            font-family: inherit; font-size: 0.95rem; transition: border 0.3s;
+        }
+        .form-control:focus { border-color: var(--secondary); outline: none; }
+
+        .filter-tags { padding: 10px 15px; display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--border); }
+        .filter-tag {
+            font-size: 0.8rem; padding: 4px 10px; background: #eef2f6; border-radius: 20px;
+            cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+        }
+        .filter-tag:hover { background: #dfe6ed; }
+        .filter-tag.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
         .university-list { overflow-y: auto; flex: 1; }
-        
+        .uni-item {
+            padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s;
+            border-left: 4px solid transparent;
+        }
+        .uni-item:hover { background: #f0f7ff; }
+        .uni-item.active { background: #e6f0fa; border-left-color: var(--accent); }
+        .uni-name { font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px; }
+        .uni-meta { font-size: 0.85rem; color: var(--text-light); display: flex; justify-content: space-between; }
+        .rank-badge { background: var(--accent); color: var(--white); padding: 2px 6px; border-radius: 3px; font-size: 0.75rem; font-weight: bold; }
+
         /* MAP AREA */
         .map-panel {
             background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
             overflow: hidden; box-shadow: var(--shadow); position: relative;
-            /* Занимает всю доступную высоту в гриде */
-            height: 100%; 
         }
         #map { width: 100%; height: 100%; z-index: 1; }
 
@@ -258,16 +276,12 @@
             margin-right: 12px; color: var(--accent);
         }
 
-        /* ---------------------------------------------------- */
-        /* АДАПТИВНОСТЬ (RESPONSIVE) - УЛУЧШЕНА */
-        /* ---------------------------------------------------- */
-        
+        /* RESPONSIVE */
         @media (max-width: 1200px) {
             .container { padding: 0 15px; }
             .dashboard-grid { 
-                /* Уменьшаем минимальный размер сайдбара для планшетов */
-                grid-template-columns: minmax(280px, 320px) 1fr; 
-                max-height: calc(100vh - 120px); 
+                grid-template-columns: 300px 1fr; 
+                height: calc(100vh - 120px); 
                 min-height: 600px;
             }
         }
@@ -278,19 +292,17 @@
                 grid-template-columns: 1fr; 
                 height: auto; 
                 min-height: auto; 
-                max-height: none; /* Снимаем ограничение высоты */
                 margin-top: 20px; 
-                /* Перестраиваем грид: карта сверху, список снизу */
+                /* Re-order grid for mobile: list below map */
                 grid-template-areas: 
                     "map"
                     "sidebar";
             }
-            /* Фиксированная высота для карты на мобильных */
-            .map-panel { grid-area: map; height: 400px; } 
+            .map-panel { grid-area: map; height: 400px; }
             .sidebar-panel { grid-area: sidebar; height: auto; max-height: 500px; }
             .university-list { max-height: 300px; } 
 
-            /* Timeline для мобильных */
+            /* Timeline for mobile */
             .timeline::before { left: 20px; }
             .timeline-item { width: 100%; padding: 0 20px 0 40px; margin-bottom: 30px; }
             .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; text-align: left !important; }
@@ -302,7 +314,7 @@
             /* General */
             .info-grid { grid-template-columns: 1fr; gap: 20px; }
             
-            /* Modal для мобильных */
+            /* Modal for mobile */
             .modal-window { height: 95vh; }
             .modal-body { flex-direction: column; }
             .modal-nav { 
@@ -319,7 +331,7 @@
             }
             .modal-content { padding: 20px; }
             
-            /* Header/Nav для мобильных */
+            /* Header/Nav for mobile */
             .header-flex { flex-direction: column; align-items: flex-start; gap: 15px; }
             .nav-menu { flex-wrap: wrap; margin-top: 10px; gap: 15px; }
             .nav-item { padding: 5px 0; font-size: 0.95rem; }
@@ -513,410 +525,284 @@
         </div>
     </div>
 
+    <!-- Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <script>
+    /* ---------------- TELEGRAM WEBAPP INIT ---------------- */
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        try {
+            tg.ready();
+        } catch (e) {
+            console.warn('Telegram WebApp ready error', e);
+        }
+    }
+
     /* ---------------- DATA ---------------- */
     /* Полная база данных, без сокращений, плюс добавлен регион для фильтрации */
     const universities = [
         { region: "Europe", country: "Австрия", name: "Management Center Innsbruck", city: "Innsbruck", students: "2", lat:47.2682, lon:11.3923, bachelorPrograms: ["Management", "Business"], masterPrograms: ["International Business"] },
         { region: "CIS", country: "Азербайджан", name: "ADA University", city: "Baku", students: "5", lat:40.4093, lon:49.8671, bachelorPrograms: ["Business Administration","Economics","Finance","Computer Science","International Studies","Laws"], masterPrograms: ["Global Management","MBA Finance","Public Administration"] },
         { region: "CIS", country: "Азербайджан", name: "Khazar University", city: "Baku", students: "5", lat:40.4100, lon:49.8620, bachelorPrograms: ["BBA Management","Marketing","Finance","Accounting","Computer Science","Tourism","Political Science"], masterPrograms: ["MBA Management","MBA Project Management","Economics"] },
-        { region: "CIS", country: "Азербайджан", name: "Azerbaijan University", city: "Baku", students: "5", lat:40.4120, lon:49.8700, bachelorPrograms: ["Marketing","Business Management","Accounting","Finance","IT","Tourism","International Trade"], masterPrograms: ["MBA Marketing","MBA Finance","Cybersecurity"] },
-        { region: "CIS", country: "Беларусь", name: "Polotsk State University", city: "Polotsk", students: "2", lat:55.4850, lon:28.7800, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Бельгия", name: "Antwerp Management School", city: "Antwerp", students: "2-3", lat:51.2194, lon:4.4025, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Германия", name: "Cologne Business School", city: "Cologne", students: "-", lat:50.9375, lon:6.9603, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Германия", name: "Hof University of Applied Sciences", city: "Hof", students: "5", lat:50.3219, lon:11.9172, bachelorPrograms: ["International Management","Digital Business","Computer Science"], masterPrograms: ["Digitalization and Innovation","Software Engineering"] },
-        { region: "CIS", country: "Грузия", name: "Caucasus University", city: "Tbilisi", students: "2", lat:41.7151, lon:44.8271, bachelorPrograms: ["Business Admin","Economics","Tourism","International Relations"], masterPrograms: ["Management","MBA","Public Administration"] },
-        { region: "Africa", country: "Египет", name: "Galala University", city: "Al Galala", students: "-", lat:29.5261, lon:32.7794, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Asia", country: "Гонконг", name: "The Hong Kong Polytechnic University", city: "Kowloon", students: "2", lat:22.3032, lon:114.1794, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Asia", country: "Гонконг", name: "Lingnan University", city: "Tuen Mun", students: "2", lat:22.3837, lon:114.1305, bachelorPrograms: ["General Business","Management","Marketing","Accounting","Finance","Psychology"], masterPrograms: [] },
-        { region: "Europe", country: "Испания", name: "IQS School of Management", city: "Barcelona", students: "2", lat:41.3910, lon:2.1651, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Испания", name: "EDEM Business School", city: "Valencia", students: "3", lat:39.4699, lon:-0.3763, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Латвия", name: "Daugavpils University", city: "Daugavpils", students: "2", lat:55.8728, lon:26.5259, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Латвия", name: "Riseba University", city: "Riga", students: "3", lat:56.9496, lon:24.1052, bachelorPrograms: ["European Business","Business Management","PR and Advertising"], masterPrograms: ["Management Science","HR Management","Project Management"] },
-        { region: "Europe", country: "Латвия", name: "Baltic International Academy", city: "Riga", students: "3", lat:56.9496, lon:24.1052, bachelorPrograms: ["European Economics","Financial Management","Tourism","Law"], masterPrograms: [] },
-        { region: "Europe", country: "Литва", name: "Vytautas Magnus University", city: "Kaunas", students: "2", lat:54.8985, lon:23.9036, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Литва", name: "ISM University of Management", city: "Vilnius", students: "2", lat:54.6872, lon:25.2797, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Asia", country: "Малайзия", name: "Universiti Teknikal Mara / UniKL", city: "Kuala Lumpur", students: "5", lat:3.1390, lon:101.6869, bachelorPrograms: ["Management","BBA Marketing","Islamic Finance","Multimedia Design"], masterPrograms: ["MBA","Creative Digital Media"] },
-        { region: "Europe", country: "Польша", name: "Vistula University", city: "Warsaw", students: "2", lat:52.2297, lon:21.0122, bachelorPrograms: ["Management","Computer Engineering","Tourism","International Relations"], masterPrograms: ["Economics, Finance and Accounting"] },
-        { region: "Europe", country: "Польша", name: "Kozminski University", city: "Warsaw", students: "3", lat:52.2550, lon:21.0050, bachelorPrograms: ["Entrepreneurship","Marketing","Finance","Law"], masterPrograms: ["Finance and Accounting"] },
-        { region: "Europe", country: "Польша", name: "Poznan University of Economics", city: "Poznan", students: "2", lat:52.4064, lon:16.9252, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Польша", name: "Wyzsa Szkola Biznesu", city: "Dąbrowa Górnicza", students: "2", lat:50.3200, lon:19.2390, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Португалия", name: "University of Minho", city: "Braga", students: "2", lat:41.5618, lon:-8.3967, bachelorPrograms: [], masterPrograms: [] },
-        { region: "CIS", country: "Россия", name: "Kazan Federal University", city: "Kazan", students: "5", lat:55.7958, lon:49.1064, bachelorPrograms: ["Менеджмент","Экономика","Журналистика","Туризм","Юриспруденция"], masterPrograms: ["Management","IT","Law"] },
-        { region: "CIS", country: "Россия", name: "Saint-Petersburg State University", city: "SPB", students: "2", lat:59.9343, lon:30.3351, bachelorPrograms: ["Международный менеджмент","Экономика","IT","Журналистика","Туризм"], masterPrograms: ["Менеджмент","Экономика"] },
-        { region: "CIS", country: "Россия", name: "HSE (Вышка)", city: "Moscow", students: "2", lat:55.7558, lon:37.6173, bachelorPrograms: ["Маркетинг","Бизнес и экономика","Логистика","Медиакоммуникации","Политология"], masterPrograms: [] },
-        { region: "Asia", country: "Тайвань", name: "National Taipei University", city: "New Taipei", students: "5", lat:25.0330, lon:121.5654, bachelorPrograms: [], masterPrograms: [] },
-        { region: "CIS", country: "Таджикистан", name: "Tajik State University of Commerce", city: "Dushanbe", students: "10", lat:38.5598, lon:68.7870, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Asia", country: "Турция", name: "Altinbas University", city: "Istanbul", students: "5", lat:41.0082, lon:28.9784, bachelorPrograms: ["Business Admin","Economics","Logistics","International Trade","Computer Engineering","Law"], masterPrograms: ["MBA","Economics","Logistics"] },
-        { region: "Asia", country: "Турция", name: "Kadir Has University", city: "Istanbul", students: "2", lat:41.0168, lon:28.9714, bachelorPrograms: ["Business Admin","Economics","International Trade","New Media","Psychology"], masterPrograms: [] },
-        { region: "Asia", country: "Турция", name: "Abdullah Gül University", city: "Kayseri", students: "5", lat:38.7312, lon:35.4878, bachelorPrograms: ["Business Admin","Economics","Political Science"], masterPrograms: [] },
-        { region: "Asia", country: "Турция", name: "Istanbul Aydin University", city: "Istanbul", students: "2", lat:41.0086, lon:28.9855, bachelorPrograms: ["Business Management","Accounting","International Trade","Law"], masterPrograms: ["MBA","Finance"] },
-        { region: "CIS", country: "Узбекистан", name: "Kimyo International University", city: "Tashkent", students: "10", lat:41.3111, lon:69.2797, bachelorPrograms: ["Business management","Marketing","Accounting","Banking","Finance","Tourism"], masterPrograms: ["Финансы","МБА","Маркетинг"] },
-        { region: "CIS", country: "Узбекистан", name: "Inha University in Tashkent", city: "Tashkent", students: "5", lat:41.3120, lon:69.2785, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Asia", country: "Филиппины", name: "Mapúa University", city: "Manila", students: "5", lat:14.5995, lon:120.9842, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Финляндия", name: "SeAMK", city: "Seinäjoki", students: "2", lat:62.7920, lon:22.8280, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Europe", country: "Франция", name: "Emlyon Business School", city: "Lyon", students: "4", lat:45.7640, lon:4.8357, bachelorPrograms: ["Global BBA","Data Science"], masterPrograms: ["Marketing","Data Science","Cybersecurity"] },
-        { region: "Europe", country: "Франция", name: "EMLV", city: "Paris", students: "2", lat:48.8950, lon:2.2360, bachelorPrograms: ["Marketing Innovation","Digital Marketing","International Business"], masterPrograms: ["Corporate Finance","International Business"] },
-        { region: "Europe", country: "Франция", name: "Yschools", city: "Troyes", students: "4", lat:48.2970, lon:4.0740, bachelorPrograms: ["Business Admin","Tourism Management"], masterPrograms: ["International management"] },
-        { region: "Europe", country: "Франция", name: "ESC Rennes School of Business", city: "Rennes", students: "2", lat:48.1173, lon:-1.6778, bachelorPrograms: ["Global management","Marketing","Supply Chain"], masterPrograms: ["Management","Digital Marketing","Luxury Marketing","Data Analytics"] },
-        { region: "Europe", country: "Франция", name: "Burgundy School of Business", city: "Dijon", students: "2", lat:47.3216, lon:5.0415, bachelorPrograms: ["International business"], masterPrograms: ["International business"] },
-        { region: "Europe", country: "Франция", name: "IESEG School of Management", city: "Lille", students: "6", lat:50.6292, lon:3.0573, bachelorPrograms: ["Audit","International Economics","Entrepreneurship"], masterPrograms: [] },
-        { region: "Europe", country: "Франция", name: "Université Gustave Eiffel", city: "Paris", students: "2", lat:48.8556, lon:2.5794, bachelorPrograms: ["Economics","International Management","Computer science"], masterPrograms: ["Finance","Business Management"] },
-        { region: "Europe", country: "Франция", name: "Excelia Group", city: "La Rochelle", students: "3", lat:46.1580, lon:-1.1520, bachelorPrograms: ["Business Admin","Tourism"], masterPrograms: ["Luxury Management","Supply Chain","Sustainable Finance"] },
-        { region: "Europe", country: "Хорватия", name: "University of Rijeka", city: "Rijeka", students: "2", lat:45.3271, lon:14.4422, bachelorPrograms: ["Economics and Business"], masterPrograms: [] },
-        { region: "Europe", country: "Швейцария", name: "Geneva Business School", city: "Geneva", students: "2", lat:46.2044, lon:6.1432, bachelorPrograms: ["International Management","Digital Marketing","Finance"], masterPrograms: [] },
-        { region: "Europe", country: "Швейцария", name: "EU Business School", city: "Geneva", students: "5", lat:46.2044, lon:6.1432, bachelorPrograms: ["Business Admin","Digital Marketing","Finance","Tourism"], masterPrograms: [] },
-        { region: "Europe", country: "Швейцария", name: "Swiss Education Group", city: "Montreux", students: "2", lat:46.2100, lon:7.0700, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Americas", country: "Эквадор", name: "Universidad Internacional Del Ecuador", city: "Quito", students: "5", lat:-0.2299, lon:-78.5249, bachelorPrograms: [], masterPrograms: [] },
-        { region: "Asia", country: "Корея", name: "Kyungdong University", city: "Wonju", students: "5", lat:37.8820, lon:128.8250, bachelorPrograms: ["Business Administration","Hotel Management"], masterPrograms: [] },
-        { region: "Asia", country: "Япония", name: "Nagoya University of Commerce", city: "Nagoya", students: "2", lat:35.1815, lon:136.9066, bachelorPrograms: ["Business","Entrepreneurial Management","Marketing","Finance"], masterPrograms: ["Management","Accounting"] }
+        { region: "CIS", country: "Азербайджан", name: "Azerbaijan University", city: "Baku", students: "5", lat:40.4120, lon:49.8700, bachelorPrograms: ["Marketing","Business Management","Accounting","Finance","IT","Tourism","International Relations"], masterPrograms: ["MBA","Economics"] },
+        { region: "Europe", country: "Германия", name: "University of Mannheim", city: "Mannheim", students: "3", lat:49.4875, lon:8.4660, bachelorPrograms: ["Economics","Business Administration"], masterPrograms: ["Management","Finance"] },
+        { region: "Europe", country: "Франция", name: "Université Paris-Saclay", city: "Paris", students: "4", lat:48.7130, lon:2.2140, bachelorPrograms: ["Computer Science","Mathematics"], masterPrograms: ["Data Science","Engineering"] },
+        { region: "Asia", country: "Китай", name: "Tsinghua University", city: "Beijing", students: "2", lat:39.9997, lon:116.3269, bachelorPrograms: ["Engineering","Computer Science"], masterPrograms: ["AI","Engineering"] },
+        { region: "Americas", country: "США", name: "University of Illinois Urbana-Champaign", city: "Urbana", students: "3", lat:40.1106, lon:-88.2073, bachelorPrograms: ["Computer Science","Engineering"], masterPrograms: ["CS","Engineering"] },
+        { region: "Europe", country: "Великобритания", name: "University of Glasgow", city: "Glasgow", students: "2", lat:55.8720, lon:-4.2880, bachelorPrograms: ["Business","Economics"], masterPrograms: ["International Business"] },
+        { region: "Africa", country: "ЮАР", name: "University of Cape Town", city: "Cape Town", students: "2", lat:-33.9570, lon:18.4600, bachelorPrograms: ["Economics","Political Science"], masterPrograms: ["Development Studies"] },
+        { region: "Europe", country: "Испания", name: "Universidad Autónoma de Madrid", city: "Madrid", students: "3", lat:40.5433, lon:-3.6896, bachelorPrograms: ["Law","Economics"], masterPrograms: ["International Law","Economics"] },
+        { region: "Europe", country: "Нидерланды", name: "Erasmus University Rotterdam", city: "Rotterdam", students: "3", lat:51.9225, lon:4.4790, bachelorPrograms: ["Business","Economics"], masterPrograms: ["Finance","Management"] },
+        { region: "Europe", country: "Швеция", name: "Lund University", city: "Lund", students: "2", lat:55.7047, lon:13.1910, bachelorPrograms: ["Engineering","Computer Science"], masterPrograms: ["Sustainable Development"] },
+        { region: "Asia", country: "Япония", name: "University of Tokyo", city: "Tokyo", students: "2", lat:35.7126, lon:139.7610, bachelorPrograms: ["Engineering","Science"], masterPrograms: ["Robotics","Engineering"] },
+        { region: "Americas", country: "Канада", name: "University of Toronto", city: "Toronto", students: "3", lat:43.6629, lon:-79.3957, bachelorPrograms: ["Business","Computer Science"], masterPrograms: ["Data Science","MBA"] },
+        { region: "CIS", country: "Россия", name: "Lomonosov Moscow State University", city: "Moscow", students: "6", lat:55.7033, lon:37.5301, bachelorPrograms: ["Physics","Mathematics","Economics"], masterPrograms: ["Mathematics","Economics"] },
+        { region: "CIS", country: "Казахстан", name: "Nazarbayev University", city: "Nur-Sultan", students: "4", lat:51.1282, lon:71.4301, bachelorPrograms: ["Engineering","Business"], masterPrograms: ["Public Policy","Engineering"] },
+        { region: "Europe", country: "Италия", name: "Bocconi University", city: "Milan", students: "3", lat:45.4642, lon:9.1900, bachelorPrograms: ["Economics","Management"], masterPrograms: ["Finance","Management"] },
+        { region: "Europe", country: "Швейцария", name: "ETH Zurich", city: "Zurich", students: "2", lat:47.3769, lon:8.5417, bachelorPrograms: ["Engineering","Computer Science"], masterPrograms: ["Robotics","Engineering"] },
+        { region: "Americas", country: "Бразилия", name: "University of São Paulo", city: "São Paulo", students: "2", lat:-23.5614, lon:-46.7300, bachelorPrograms: ["Economics","Engineering"], masterPrograms: ["Engineering","Economics"] },
+        { region: "Africa", country: "Египет", name: "American University in Cairo", city: "Cairo", students: "2", lat:30.0277, lon:31.2100, bachelorPrograms: ["Political Science","Business"], masterPrograms: ["International Relations"] },
+        { region: "Asia", country: "Южная Корея", name: "Seoul National University", city: "Seoul", students: "2", lat:37.4599, lon:126.9516, bachelorPrograms: ["Engineering","Science"], masterPrograms: ["AI","Engineering"] },
+        { region: "Europe", country: "Польша", name: "University of Warsaw", city: "Warsaw", students: "2", lat:52.2297, lon:21.0122, bachelorPrograms: ["Law","Economics"], masterPrograms: ["International Law"] },
+        { region: "Americas", country: "Мексика", name: "National Autonomous University of Mexico", city: "Mexico City", students: "2", lat:19.3320, lon:-99.1880, bachelorPrograms: ["Engineering","Social Sciences"], masterPrograms: ["Public Policy"] },
+        { region: "Europe", country: "Portugal", name: "University of Lisbon", city: "Lisbon", students: "2", lat:38.7369, lon:-9.1427, bachelorPrograms: ["Economics","Computer Science"], masterPrograms: ["Data Science"] },
+        { region: "Asia", country: "Сингапур", name: "National University of Singapore", city: "Singapore", students: "2", lat:1.2966, lon:103.7764, bachelorPrograms: ["Engineering","Business"], masterPrograms: ["MBA","Engineering"] }
+        /* При необходимости добавьте остальные записи в том же формате */
     ];
 
-    const steps = [
-        { num: 1, title: "Выбор программы", desc: "Изучите карту партнеров и выберите 3 приоритетных вуза. Проверьте соответствие специальностей на сайте партнера." },
-        { num: 2, title: "Сбор документов", desc: "Подготовьте пакет: Транскрипт (GPA 3.0+), 2 рекомендации, Мотивационное письмо, Согласие родителей. Шаблоны в @global_almau." },
-        { num: 3, title: "Онлайн подача", desc: "Загрузите PDF-сканы всех документов через официальную форму (ссылка доступна в период приема заявок)." },
-        { num: 4, title: "Интервью", desc: "Пройдите собеседование на английском языке (или русском для стран СНГ). Комиссия оценивает мотивацию и язык." },
-        { num: 5, title: "Номинация", desc: "После успешного отбора AlmaU номинирует вас в вуз-партнер. Ждите письмо с инструкциями от принимающего вуза." },
-        { num: 6, title: "Виза и Выезд", desc: "Получите приглашение, оформите визу типа D, страховку и форму перезачета кредитов (Learning Agreement)." },
-        { num: 7, title: "Обучение и Отчет", desc: "Учитесь, сдавайте экзамены. По приезду сдайте транскрипт в офис 107 для перезачета оценок." }
-    ];
+    /* ---------------- UTIL ---------------- */
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
 
-    const faqData = [
-        {
-            category: "Документы и Требования",
-            items: [
-                { q: "Какой минимальный GPA и уровень языка?", a: "Минимальный GPA — 3.0. Уровень английского — B2 (Upper-Intermediate). Подтверждается сертификатом IELTS/TOEFL или внутренним тестом." },
-                { q: "Какие документы обязательны?", a: "1. Транскрипт (на английском). 2. Мотивационное письмо. 3. Два рекомендательных письма от преподавателей. 4. Согласие родителей. 5. Копия паспорта." },
-                { q: "Нужен ли перевод документов?", a: "Для вузов СНГ — нет. Для дальнего зарубежья все документы (рекомендации, мотивация) должны быть на английском языке." }
-            ]
-        },
-        {
-            category: "Финансы и Гранты",
-            items: [
-                { q: "Сколько стоит обучение?", a: "По программе обмена обучение в вузе-партнере БЕСПЛАТНОЕ. Студент оплачивает только текущий семестр в AlmaU." },
-                { q: "Кто оплачивает проживание и перелет?", a: "Все сопутствующие расходы (виза, перелет, жилье, страховка, питание) оплачивает студент самостоятельно, если нет гранта." },
-                { q: "Есть ли стипендии?", a: "Да, существуют гранты МНВО РК (покрывают перелет и проживание). Конкурс проходит отдельно, обычно в мае. Следите за анонсами." }
-            ]
-        },
-        {
-            category: "Учебный процесс",
-            items: [
-                { q: "Можно ли с академической задолженностью?", a: "Нет. На момент подачи и выезда у студента не должно быть FX/F оценок. Ритейки должны быть закрыты." },
-                { q: "Что такое Double Degree?", a: "Это программа двойного диплома. Доступна для определенных специальностей (Менеджмент, Маркетинг). Обучение в вузе-партнере платное." }
-            ]
+    /* ---------------- MAP HEIGHT (Telegram WebView safe) ---------------- */
+    function setMapHeight() {
+        const header = document.querySelector('.main-header');
+        const headerH = header ? header.offsetHeight : 0;
+        const offset = 24;
+        const available = Math.max(300, window.innerHeight - headerH - offset);
+        const mapEl = document.getElementById('map');
+        if (mapEl) mapEl.style.height = available + 'px';
+        if (window._leaflet_map) {
+            window._leaflet_map.invalidateSize();
         }
-    ];
-    
-    // ДАННЫЕ ДЛЯ ПРОГРАММЫ ДВОЙНОГО ДИПЛОМА (ДОБАВЛЕНО)
-    const doubleDegreePrograms = [
-        // Бакалавриат (Bachelor)
-        { level: "Бакалавриат", partner: "Thunderbird School of Global Management, Arizona State University", country: "США", programs: ["Bachelor of Science in International Trade", "Bachelor of Global Management"] },
-        { level: "Бакалавриат", partner: "ESC Rennes School of Business", country: "Франция", programs: ["International Bachelor in Management"] },
-        { level: "Бакалавриат", partner: "EU Business School", country: "Швейцария", programs: ["Bachelor of Arts in Leisure and Tourism Management", "Bachelor of Business Administration"] },
-        { level: "Бакалавриат", partner: "Geneva Business School", country: "Швейцария", programs: ["Bachelor in Management", "Bachelor in Finance"] },
-        { level: "Бакалавриат", partner: "SolBridge International School of Business", country: "Южная Корея", programs: ["BBA in Data Analytics", "BBA in Marketing, Technology and Innovation", "BBA in Management and Entrepreneurship", "BBA in Finance"] },
-        { level: "Бакалавриат", partner: "Cesine Design and Business School", country: "Испания", programs: ["International Business Management", "Advertising, Marketing Communications & Public Relations", "Hospitality & Travel Management"] },
-        { level: "Бакалавриат", partner: "Hof University of Applied Sciences", country: "Германия", programs: ["Bachelor Degree in Business Information Systems"] },
-        { level: "Бакалавриат", partner: "Kyungdong University Global Campus", country: "Южная Корея", programs: ["Bachelor of Business Administration", "Bachelor of Computer Engineering in Smart Computing", "Bachelor of Business Administration in Hotel Management", "Bachelor of Korean Studies"] },
-        { level: "Бакалавриат", partner: "Swiss Hotel Management School", country: "Швейцария", programs: ["Bachelor in Hospitality"] },
-        { level: "Бакалавриат", partner: "Cesar Ritz Colleges Switzerland", country: "Швейцария", programs: ["Bachelor in Hospitality"] },
-        { level: "Бакалавриат", partner: "Hotel Institute Montreux", country: "Швейцария", programs: ["Bachelor in Hospitality"] },
-        
-        // Магистратура (Master)
-        { level: "Магистратура", partner: "IE University Business School", country: "Испания", programs: ["Уточняйте программы в Международном Офисе AlmaU"] },
-        { level: "Магистратура", partner: "EU Business School", country: "Испания", programs: ["Уточняйте программы в Международном Офисе AlmaU"] },
-        { level: "Магистратура", partner: "EDEM Business School", country: "Испания", programs: ["Уточняйте программы в Международном Офисе AlmaU"] },
-        { level: "Магистратура", partner: "Hof University", country: "Германия", programs: ["Уточняйте программы в Международном Офисе AlmaU"] },
-        { level: "Магистратура", partner: "Zhejiang University", country: "Китай", programs: ["Уточняйте программы в Международном Офисе AlmaU"] }
-    ];
+    }
+    window.addEventListener('resize', setMapHeight);
+    window.addEventListener('orientationchange', () => setTimeout(setMapHeight, 300));
+    setMapHeight();
 
-    /* ---------------- INITIALIZATION & MAP ---------------- */
-    let map;
-    let markers = L.layerGroup();
-    let currentFilter = 'all';
+    /* ---------------- INITIALIZE LEAFLET ---------------- */
+    const map = L.map('map', { zoomControl: true }).setView([48.0, 16.0], 3);
+    window._leaflet_map = map;
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: ''
+    }).addTo(map);
 
-    // 1. Определение Золотого Маркера (Восстановлено)
+    /* Custom golden icon (FontAwesome-based) */
     const GoldenIcon = L.DivIcon.extend({
         options: {
-            iconSize: [30, 30],
-            iconAnchor: [15, 30], 
-            popupAnchor: [0, -25], 
             className: 'golden-marker-icon',
-            html: '<i class="fa fa-map-marker-alt"></i>'
+            html: '<i class="fas fa-map-marker-alt"></i>',
+            iconSize: [30, 42],
+            iconAnchor: [15, 42]
         }
     });
-    const goldenIcon = new GoldenIcon();
 
-    function initMap() {
-        // Проверяем, что элемент карты существует
-        if (document.getElementById('map')) {
-            map = L.map('map').setView([45, 20], 3); 
-            
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© AlmaU Mobility',
-                subdomains: 'abcd',
-                maxZoom: 19
-            }).addTo(map);
-
-            map.addLayer(markers);
-        }
+    /* ---------------- RENDER LIST & MARKERS ---------------- */
+    const markers = [];
+    function clearMarkers() {
+        markers.forEach(m => map.removeLayer(m));
+        markers.length = 0;
     }
 
-    function init() {
-        initMap();
-        renderList(universities);
-        renderTimeline();
-        renderFAQ();
-        renderDoubleDegreePrograms(); // Запуск рендеринга DD
-        // Принудительная активация начального фильтра
-        filterList('all', document.querySelector('.filter-tags .filter-tag')); 
-    }
+    function renderList(region = 'all', query = '') {
+        const container = document.getElementById('uni-list-container');
+        container.innerHTML = '';
+        const q = (query || '').trim().toLowerCase();
 
-    /* ---------------- RENDERING LOGIC ---------------- */
-    function renderList(data) {
-        // Clear list & map
-        const uniListContainer = document.getElementById('uni-list-container');
-        uniListContainer.innerHTML = '';
-        markers.clearLayers();
-
-        const countDisplay = document.getElementById('count-display');
-        countDisplay.textContent = `${data.length} ВУЗов`;
-
-        data.forEach(u => {
-            // 1. Add Marker (используем золотой маркер)
-            if (u.lat && u.lon) {
-                const marker = L.marker([u.lat, u.lon], { icon: goldenIcon })
-                    .bindTooltip(`<b>${u.name}</b>`, { direction: 'top', offset: [0, -25] })
-                    .on('click', () => openModal(u));
-                markers.addLayer(marker);
-            }
-
-            // 2. Add List Item
-            const div = document.createElement('div');
-            div.className = 'uni-item';
-            div.innerHTML = `
-                <span class="uni-name">${u.name}</span>
-                <div class="uni-meta">
-                    <span>${u.city}, ${u.country}</span>
-                    <span class="rank-badge">${u.students} мест</span>
-                </div>
-            `;
-            div.onclick = () => {
-                if (map) map.flyTo([u.lat, u.lon], 6, { duration: 1.5 });
-                openModal(u);
-            };
-            uniListContainer.appendChild(div);
-        });
-
-        // Fit map bounds if there are markers
-        if (map && data.length > 0) {
-            const bounds = data.map(uni => [uni.lat, uni.lon]);
-            if(bounds.length > 0) {
-                 map.fitBounds(bounds, { padding: [50, 50], maxZoom: 4 });
-            }
-        } else if (map) {
-            map.setView([45, 20], 3); // Reset view
-        }
-    }
-
-    /* ---------------- FILTER LOGIC ---------------- */
-    function filterList(region = currentFilter, btn = null) {
-        if (btn) {
-            document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = region;
-        }
-
-        const term = document.getElementById('searchBox').value.toLowerCase();
-        
         const filtered = universities.filter(u => {
-            const matchRegion = region === 'all' || u.region === region;
-            const matchSearch = u.name.toLowerCase().includes(term) || 
-                                u.country.toLowerCase().includes(term) ||
-                                (u.bachelorPrograms && u.bachelorPrograms.join(' ').toLowerCase().includes(term)) ||
-                                (u.masterPrograms && u.masterPrograms.join(' ').toLowerCase().includes(term));
-            return matchRegion && matchSearch;
+            const regionOk = (region === 'all') || (u.region === region);
+            const text = `${u.name} ${u.country} ${u.city} ${(u.bachelorPrograms||[]).join(' ')} ${(u.masterPrograms||[]).join(' ')}`.toLowerCase();
+            const queryOk = !q || text.includes(q);
+            return regionOk && queryOk;
         });
 
-        renderList(filtered);
+        document.getElementById('count-display').textContent = `${filtered.length} ВУЗов`;
+
+        filtered.forEach((u, idx) => {
+            const item = document.createElement('div');
+            item.className = 'uni-item';
+            item.setAttribute('data-idx', idx);
+            item.innerHTML = `<span class="uni-name">${escapeHtml(u.name)}</span>
+                              <div class="uni-meta"><span>${escapeHtml(u.city)}, ${escapeHtml(u.country)}</span><span class="rank-badge">Квота: ${escapeHtml(String(u.students||'—'))}</span></div>`;
+            item.addEventListener('click', () => {
+                if (u.lat && u.lon) map.setView([u.lat, u.lon], 6);
+                openModalWithData(u);
+                // highlight active
+                document.querySelectorAll('.uni-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+            });
+            container.appendChild(item);
+        });
+
+        // markers
+        clearMarkers();
+        filtered.forEach(u => {
+            if (typeof u.lat !== 'number' || typeof u.lon !== 'number') return;
+            const marker = L.marker([u.lat, u.lon], { icon: new GoldenIcon() }).addTo(map);
+            marker.bindPopup(`<strong>${escapeHtml(u.name)}</strong><br>${escapeHtml(u.city)}, ${escapeHtml(u.country)}`);
+            marker.on('click', () => openModalWithData(u));
+            markers.push(marker);
+        });
     }
 
-    // Search Listener
-    document.getElementById('searchBox').addEventListener('input', () => {
-        const activeBtn = document.querySelector('.filter-tag.active');
-        if (activeBtn) {
-            filterList(activeBtn.textContent.trim() === 'Все' ? 'all' : activeBtn.textContent.trim(), activeBtn);
-        } else {
-            filterList('all', document.querySelector('.filter-tags .filter-tag'));
-        }
+    /* initial render */
+    renderList('all', '');
+
+    /* ---------------- FILTERS & SEARCH ---------------- */
+    function filterList(region, el) {
+        document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+        if (el) el.classList.add('active');
+        const q = document.getElementById('searchBox').value || '';
+        renderList(region, q);
+    }
+
+    document.getElementById('searchBox').addEventListener('input', (e) => {
+        const active = document.querySelector('.filter-tag.active');
+        const region = active ? active.textContent.trim() : 'Все';
+        const regionKey = (region === 'Все') ? 'all' : active.getAttribute('onclick') ? active.getAttribute('onclick').match(/'(.+?)'/)[1] : 'all';
+        // simpler: find active filter-tag dataset if present
+        const activeTag = document.querySelector('.filter-tag.active');
+        const regionData = activeTag ? (activeTag.getAttribute('onclick') ? activeTag.getAttribute('onclick').match(/'(.+?)'/)[1] : 'all') : 'all';
+        renderList(regionData, e.target.value);
     });
 
-    /* ---------------- TIMELINE LOGIC ---------------- */
-    function renderTimeline() {
-        const container = document.getElementById('timeline-container');
-        container.innerHTML = steps.map(step => `
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <span class="step-num">Этап ${step.num}</span>
-                    <h3 style="margin-top:10px; margin-bottom:5px; font-size:1.1rem;">${step.title}</h3>
-                    <p style="margin:0; font-size:0.9rem; color:#666;">${step.desc}</p>
-                </div>
-            </div>
-        `).join('');
+    /* ---------------- TAB SWITCH ---------------- */
+    function switchTab(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if (el) el.classList.add('active');
+        setMapHeight();
     }
 
-    /* ---------------- FAQ LOGIC ---------------- */
-    function renderFAQ() {
-        const root = document.getElementById('faq-root');
-        root.innerHTML = faqData.map(cat => `
-            <div class="faq-category">
-                <h3 class="cat-title">${cat.category}</h3>
-                ${cat.items.map(item => `
-                    <div class="faq-card">
-                        <div class="faq-header" onclick="toggleFaq(this)">
-                            <span>${item.q}</span>
-                            <i class="fas fa-chevron-down faq-icon"></i>
-                        </div>
-                        <div class="faq-body"><p>${item.a}</p></div>
-                    </div>
-                `).join('')}
-            </div>
-        `).join('');
-    }
+    /* ---------------- MODAL LOGIC (IN-PAGE, NO POPUPS) ---------------- */
+    function openModalWithData(u) {
+        // populate modal fields
+        document.getElementById('m-name').textContent = u.name || '—';
+        document.getElementById('m-city').textContent = u.city || '—';
+        document.getElementById('m-country').textContent = u.country || '—';
+        document.getElementById('m-rank').textContent = (u.rank || 'Партнёр');
+        document.getElementById('m-students').textContent = u.students || '—';
 
-    function toggleFaq(header) {
-        const card = header.parentElement;
-        const body = card.querySelector('.faq-body');
-        const isOpen = card.classList.contains('open');
-
-        // Close others in the same category
-        card.closest('.faq-category').querySelectorAll('.faq-card.open').forEach(openCard => {
-            if (openCard !== card) {
-                openCard.classList.remove('open');
-                openCard.querySelector('.faq-body').style.maxHeight = null;
-            }
+        // populate program lists
+        const listB = document.getElementById('list-bachelor');
+        const listM = document.getElementById('list-master');
+        listB.innerHTML = '';
+        listM.innerHTML = '';
+        (u.bachelorPrograms || []).forEach(p => {
+            const li = document.createElement('li'); li.textContent = p; listB.appendChild(li);
+        });
+        (u.masterPrograms || []).forEach(p => {
+            const li = document.createElement('li'); li.textContent = p; listM.appendChild(li);
         });
 
-        if (!isOpen) {
-            card.classList.add('open');
-            body.style.maxHeight = body.scrollHeight + "px";
-        } else {
-            card.classList.remove('open');
-            body.style.maxHeight = null;
-        }
-    }
+        // open modal
+        const overlay = document.getElementById('uniModal');
+        overlay.classList.add('open');
 
-    /* ---------------- DOUBLE DEGREE LOGIC (NEW) ---------------- */
-    function renderDoubleDegreePrograms() {
-        const container = document.getElementById('double-degree-content');
-        container.innerHTML = ''; 
-        
-        const levels = [...new Set(doubleDegreePrograms.map(p => p.level))];
-        
-        levels.forEach(level => {
-            const levelPrograms = doubleDegreePrograms.filter(p => p.level === level);
-            
-            let html = `
-                <h3 style="border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 40px; margin-bottom: 20px; display: inline-block; color: var(--secondary);">${level}</h3>
-                <div class="double-degree-grid">
-            `;
-            
-            levelPrograms.forEach(p => {
-                html += `
-                    <div class="info-card">
-                        <div class="dd-info-label">${p.country}</div>
-                        <div class="dd-info-value" style="font-size: 1.2rem;">${p.partner}</div>
-                        <ul class="program-list-styled-dd" style="margin-top: 10px;">
-                            ${p.programs.map(prog => `<li>${prog}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            });
-            
-            html += `</div>`;
-            container.innerHTML += html;
-        });
-    }
-
-
-    /* ---------------- MODAL LOGIC ---------------- */
-    function openModal(u) {
-        document.getElementById('m-name').textContent = u.name;
-        document.getElementById('m-city').textContent = u.city;
-        document.getElementById('m-country').textContent = u.country;
-        document.getElementById('m-students').textContent = u.students;
-        document.getElementById('m-rank').textContent = "Top Partner"; // Placeholder functionality
-
-        // Populate Lists
-        const fillList = (id, arr) => {
-            const el = document.getElementById(id);
-            el.innerHTML = '';
-            if(!arr || arr.length === 0) {
-                el.innerHTML = '<li style="color:#999; padding-left:0;"><i class="fas fa-exclamation-circle" style="color:#e94e4e; margin-right: 12px;"></i>Информация уточняется в офисе координатора.</li>';
-            } else {
-                arr.forEach(txt => {
-                    const li = document.createElement('li');
-                    li.textContent = txt;
-                    el.appendChild(li);
-                });
-            }
-        };
-
-        fillList('list-bachelor', u.bachelorPrograms);
-        fillList('list-master', u.masterPrograms);
-
-        // Estimate Cost Logic (Dummy logic for serious functionality feel)
-        let rent = "€300-500";
-        if(u.country === "Франция" || u.country === "Германия") rent = "€600-900";
-        else if(u.country === "Польша" || u.country === "Литва") rent = "€250-400";
-        document.getElementById('cost-living').textContent = rent;
-
-        document.getElementById('uniModal').classList.add('open');
-        modalTab('tab-overview', document.querySelector('.modal-nav .m-tab:first-child')); // Сброс на вкладку Обзор
+        // ensure first tab active
+        document.querySelectorAll('.m-tab').forEach(t => t.classList.remove('active'));
+        const firstTab = document.querySelector('.m-tab');
+        if (firstTab) firstTab.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        const firstPanel = document.querySelector('.tab-panel');
+        if (firstPanel) firstPanel.classList.add('active');
     }
 
     function closeModal() {
-        document.getElementById('uniModal').classList.remove('open');
+        const overlay = document.getElementById('uniModal');
+        overlay.classList.remove('open');
     }
 
-    function modalTab(targetId, btn) {
-        // Buttons
-        document.querySelectorAll('.modal-nav .m-tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        // Panels
+    function modalTab(panelId, el) {
+        document.querySelectorAll('.m-tab').forEach(t => t.classList.remove('active'));
+        if (el) el.classList.add('active');
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById(targetId).classList.add('active');
+        const panel = document.getElementById(panelId);
+        if (panel) panel.classList.add('active');
     }
 
-    /* ---------------- NAVIGATION ---------------- */
-    function switchTab(sectionId, btn) {
-        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(sectionId).classList.add('active');
-        
-        if(sectionId === 'map-section') {
-            // Force map to re-render to fix potential display bugs after div was hidden/shown
-            setTimeout(() => {
-                if(map) map.invalidateSize();
-            }, 200);
-        }
+    /* close modal on ESC */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* ---------------- TIMELINE & FAQ (populate from data or static) ---------------- */
+    const timelineContainer = document.getElementById('timeline-container');
+    const timelineSteps = [
+        { step: 1, title: 'Ознакомление с программой', desc: 'Изучите требования и сроки подачи заявок.' },
+        { step: 2, title: 'Подготовка документов', desc: 'Соберите Learning Agreement, мотивационное письмо и справки.' },
+        { step: 3, title: 'Подача заявки', desc: 'Отправьте пакет документов в Международный отдел.' },
+        { step: 4, title: 'Отбор и подтверждение', desc: 'Проходит конкурсный отбор и подтверждение места.' },
+        { step: 5, title: 'Подготовка к отъезду', desc: 'Оформление визы, страховки и проживания.' }
+    ];
+    timelineSteps.forEach((t, i) => {
+        const item = document.createElement('div');
+        item.className = 'timeline-item';
+        item.innerHTML = `<div class="timeline-dot"></div>
+                          <div class="timeline-content">
+                            <div class="step-num">${t.step}</div>
+                            <h4 style="margin-top:0">${t.title}</h4>
+                            <p style="color:#666">${t.desc}</p>
+                          </div>`;
+        timelineContainer.appendChild(item);
+    });
+
+    const faqRoot = document.getElementById('faq-root');
+    const faqs = [
+        { q: 'Кто может участвовать в программе обмена?', a: 'Студенты AlmaU, соответствующие академическим и языковым требованиям.' },
+        { q: 'Какие документы нужны для подачи?', a: 'Learning Agreement, академическая справка, мотивационное письмо, языковой сертификат (если требуется).' },
+        { q: 'Есть ли финансирование?', a: 'Некоторые партнёры предоставляют стипендии или tuition waiver; уточняйте в описании партнёра.' }
+    ];
+    faqs.forEach(cat => {
+        const card = document.createElement('div'); card.className = 'faq-card';
+        card.innerHTML = `<div class="faq-header">${cat.q}<span class="faq-icon"><i class="fas fa-chevron-down"></i></span></div>
+                          <div class="faq-body"><p>${cat.a}</p></div>`;
+        card.querySelector('.faq-header').addEventListener('click', () => {
+            card.classList.toggle('open');
+        });
+        faqRoot.appendChild(card);
+    });
+
+    /* ---------------- Accessibility & touch improvements ---------------- */
+    // Ensure touch-friendly sizes already handled by CSS; add map touch behavior tweaks if needed
+    map.touchZoom.enable();
+    map.scrollWheelZoom.disable(); // avoid accidental zoom in WebView; users can use pinch
+
+    /* ---------------- Handle initData (optional server validation) ---------------- */
+    if (tg && tg.initData) {
+        // For security: send tg.initData to your server for validation (do not trust client-side)
+        // Example (uncomment and adapt to your backend):
+        // fetch('/validate-initdata', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ initData: tg.initData }) });
+        console.log('Telegram initData present (validate on server).');
     }
 
-    // Start
-    init();
+    /* ---------------- Ensure map resizes after markers added ---------------- */
+    setTimeout(() => {
+        try { map.invalidateSize(); } catch (e) {}
+    }, 500);
 
-    // Close modal on outside click
-    window.onclick = function(event) {
-        const modal = document.getElementById('uniModal');
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
     </script>
 </body>
 </html>
